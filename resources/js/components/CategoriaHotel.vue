@@ -16,7 +16,9 @@
                             <span class="font-weight-bold">Horario:</span>
                             {{ hotel.apertura }} - {{ hotel.cierre }}
                         </p>
-                    <a href="" class="d-block btn btn-primary">Ver lugar</a>
+                     <router-link :to="{name: 'establecimiento', params: { id: hotel.id }}">
+                        <a href="" class="d-block btn btn-primary">Ver lugar</a>
+                    </router-link>
                 </div>
 
             </div>
@@ -28,18 +30,19 @@
 <script>
 export default 
 {
-    data: function(){
-        return{
-            hoteles: []
-        }
-    },
     mounted()
     {
         axios.get('/api/categorias/hotel')
             .then(respuesta => {
-                this.hoteles = respuesta.data;
+                this.$store.commit('Hoteles', respuesta.data);
                 //console.log(respuesta.data)
             })
+    },
+    computed: 
+    {
+        hoteles(){
+            return this.$store.state.hoteles;
+        }
     }
 }
 </script>

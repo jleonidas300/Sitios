@@ -16,7 +16,9 @@
                             <span class="font-weight-bold">Horario:</span>
                             {{ cafe.apertura }} - {{ cafe.cierre }}
                         </p>
-                    <a href="" class="d-block btn btn-primary">Ver lugar</a>
+                    <router-link :to="{name: 'establecimiento', params: { id: cafe.id }}">
+                        <a href="" class="d-block btn btn-primary">Ver lugar</a>
+                    </router-link>
                 </div>
 
             </div>
@@ -28,18 +30,19 @@
 <script>
 export default 
 {
-    data: function(){
-        return{
-            cafes: []
-        }
-    },
     mounted()
     {
         axios.get('/api/categorias/cafe')
             .then(respuesta => {
-                this.cafes = respuesta.data;
+                this.$store.commit("Cafes", respuesta.data);
                 //console.log(respuesta.data)
             })
+    },
+    computed: 
+    {
+        cafes(){
+            return this.$store.state.cafes;
+        }
     }
 }
 </script>
